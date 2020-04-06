@@ -61,3 +61,22 @@
  	   subtour:
  	   u[i]-u[j]+(n-1)*x[<i,j>]<=n-2;
  }
+ 
+ main {
+ 	var mod = thisOplModel.modelDefinition;
+ 	var dat = thisOplModel.dataElements;
+ 	for (var size = 5; size<=30; size+=5){
+ 		var MyCplex = new IloCplex();
+ 		var opl = new IloOplModel(mod, MyCplex);
+ 		dat.n=size;
+ 		opl.addDataSource(dat);
+ 		opl.generate();
+ 		if (MyCplex.solve()) {
+ 			writeln("solution: ", MyCplex.getObjValue(),
+ 			" / size: ", size, 
+ 			" / time: ", MyCplex.getCplexTime()); 		
+ 		}
+ 		opl.end();
+ 		MyCplex.end(); 		 		
+ 	}
+ }
